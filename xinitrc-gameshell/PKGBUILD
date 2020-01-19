@@ -1,0 +1,14 @@
+pkgname=xinitrc-gameshell
+pkgver=0.0.1
+pkgrel=1
+pkgdesc='gameshell .xinitrc file'
+arch=(any)
+depends=()
+source=(
+./.xinitrc
+)
+sha1sums=('c956b25b787d143aaa260ebd44d6911525a1507b')
+package() {
+  cd $srcdir
+  install -Dm755 .xinitrc $pkgdir/usr/local/share/gameshell/.xinitrc
+}
