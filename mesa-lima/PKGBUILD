@@ -1,0 +1,97 @@
+# Maintainer: Lone_Wolf <lonewolf at xs4all dot nl>
+# Contributor: Armin K. <krejzi at email dot com>
+# Contributor: Kristian Klausen <klausenbusk@hotmail.com>
+# Contributor: Egon Ashrafinia <e.ashrafinia@gmail.com>
+# Contributor: Tavian Barnes <tavianator@gmail.com>
+# Contributor: Jan de Groot <jgc@archlinux.org>
+# Contributor: Andreas Radke <andyrtr@archlinux.org>
+# Contributor: Thomas Dziedzic < gostrc at gmail >
+# Contributor: Antti "Tera" Oja <antti.bofh@gmail.com>
+# Contributor: Diego Jose <diegoxter1006@gmail.com>
+
+pkgname=mesa-lima
+pkgdesc="an open-source implementation of the OpenGL specification, lima only version"
+pkgver=20.0.0_devel.1.d55573a
+pkgrel=1
+arch=('armv7h')
+makedepends=('git' 'meson' 'ninja' )
+#'python-mako' 'xorgproto' )
+#              'libxml2' 'libx11'  'libvdpau' 'libva' 'elfutils' 'libomxil-bellagio' 'libxrandr'
+#              'ocl-icd' 'libgcrypt' 'meson' 'ninja')
+#depends=('libdrm' 'libxxf86vm' 'libxdamage' 'libxshmfence' 'libelf'
+#         'libomxil-bellagio' 'libunwind' 'libglvnd' 'wayland' 'lm_sensors' 'libclc' 'glslang')
+depends=()
+optdepends=('opengl-man-pages: for the OpenGL API man pages')
+provides=(mesa=$pkgver-$pkgrel libva-mesa-driver=$pkgver-$pkgrel mesa-vdpau=$pkgver-$pkgrel opengl-driver libgl )
+conflicts=('mesa' 'opencl-mesa' 'libva-mesa-driver' 'mesa-vdpau' 'libglvnd' )
+url="https://www.mesa3d.org"
+license=('custom')
+source=('LICENSE'
+        'LICENSE'
+)
+md5sums=('10a9d94c27477a9f9afed27f7d1c4476'
+         '10a9d94c27477a9f9afed27f7d1c4476')
+sha512sums=('fdf7ec3c5f21d001ff99544fc0445c2dc904243862b19df4ec1e4288a1934b8719b37c24d4608539cfdc177ec974a9dbbb45e4a8407e82d67156775b56b81a66'
+            'fdf7ec3c5f21d001ff99544fc0445c2dc904243862b19df4ec1e4288a1934b8719b37c24d4608539cfdc177ec974a9dbbb45e4a8407e82d67156775b56b81a66')
+
+# NINJAFLAGS is an env var used to pass commandline options to ninja
+# NOTE: It's your responbility to validate the value of $NINJAFLAGS. If unsure, don't set it.
+        
+pkgver() {
+    cd mesa
+    read -r _ver <VERSION
+    echo ${_ver/-/_}.$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+prepare() {
+#pwd
+#    	cd ..
+	if [ -d mesa ]; then
+		cd mesa
+		git pull
+		cd ..
+	else
+		git clone https://gitlab.freedesktop.org/mesa/mesa.git --depth 1
+	fi
+
+    # although removing _build folder in build() function feels more natural,
+    # that interferes with the spirit of makepkg --noextract
+#    if [  -d _build ]; then
+#        rm -rf _build
+#    fi
+}
+
+build () {
+    meson setup mesa _build \
+       -D buildtype=release \
+       -D prefix=/usr \
+       -D sysconfdir=/etc \
+       -D platforms=x11,wayland,drm,surfaceless \
+       -D dri-drivers=[] \
+       -D gallium-drivers=lima,kmsro,swrast \
+       -D vulkan-drivers=[] \
+       -D dri3=true \
+       -D egl=true \
+       -D gles1=true \
+       -D gles2=true \
+       -D glx=dri \
+       -D libunwind=true \
+       -D lmsensors=true \
+       -D osmesa=gallium \
+       -D shared-glapi=true \
+       -D valgrind=false \
+       -D tools=[]
+       
+    meson configure _build
+    ninja  $NINJAFLAGS -C _build
+}
+
+package() {
+  DESTDIR="$pkgdir" ninja $NINJAFLAGS -C _build install
+
+  # indirect rendering
+  ln -s /usr/lib/libGLX_mesa.so.0 ${pkgdir}/usr/lib/libGLX_indirect.so.0
+
+  install -Dt "$pkgdir"/usr/share/licenses/$pkgname "$srcdir"/LICENSE
+}
+
