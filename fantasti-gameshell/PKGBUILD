@@ -1,0 +1,19 @@
+pkgname=fantasti-gameshell
+pkgver=0.4.k
+pkgrel=1
+pkgdesc='fantasti launcher'
+arch=(armv7h x86_64)
+depends=()
+source=('git+https://github.com/r043v/fantasti.git')
+sha1sums=(SKIP)
+build() {
+  cd fantasti
+  make -j4
+  ./compile.wifiscan.sh
+}
+package() {
+  cd fantasti
+  make DESTDIR="$pkgdir/" install
+  install -Dm755 fantasti-wl-scan $pkgdir/usr/local/bin/fantasti-wl-scan
+}
+
