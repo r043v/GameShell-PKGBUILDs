@@ -1,0 +1,24 @@
+pkgname=box86-git-gameshell
+pkgver=0.0.4.r569.b6c729f
+pkgrel=1
+pkgdesc='box86 (git-latest)'
+arch=( armv7h )
+license=('GPL')
+source=('git+https://github.com/ptitSeb/box86.git')
+sha256sums=('SKIP')
+
+pkgver() {
+  cd box86
+  printf "%s" "$(git describe --first-parent --long --tags | sed 's/v//g;s/\([^-]*-\)g/r\1/;s/-/./g')"
+}
+
+build() {
+  cd box86
+  mkdir build; cd build; cmake .. -DRPI2=1; make -j4
+}
+
+package() {
+  cd box86/build/
+  make DESTDIR="${pkgdir}" install
+}
+
