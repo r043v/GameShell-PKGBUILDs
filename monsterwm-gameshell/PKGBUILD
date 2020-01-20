@@ -1,0 +1,18 @@
+pkgname=monsterwm-gameshell
+pkgver=0.3.f
+pkgrel=1
+pkgdesc='monsterwm'
+arch=(armv7h x86_64)
+depends=()
+groups=(gameshell)
+source=(git+https://github.com/r043v/monsterwm.git)
+sha1sums=(SKIP)
+build() {
+  cd monsterwm
+  make -j4
+}
+package() {
+  cd monsterwm
+  make DESTDIR="$pkgdir/" install
+  install -Dm644 .Xmodmap $pkgdir/etc/X11/xinit/.Xmodmap
+}
