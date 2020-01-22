@@ -1,0 +1,17 @@
+pkgname=gameshell
+pkgver=0.0.3
+pkgrel=1
+arch=('any')
+depends=(
+'linux-gameshell'
+'linux-headers-gameshell'
+'fantasti-gameshell'
+'monsterwm-gameshell'
+'mesa-lima'
+'xinitrc-gameshell'
+)
+
+package() {
+  true
+}
+
