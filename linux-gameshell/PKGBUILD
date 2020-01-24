@@ -95,7 +95,6 @@ prepare() {
   git apply -v ../panel-simple.c.patch
   git apply -v ../sdio.c.patch
   git apply -v ../sun4i_drv.c.patch
-  #git apply -v ../sun4i-i2s.c.patch
   git apply -v ../sun6i-prcm.c.patch
   git apply -v ../sun8i-codec-aif2.c.patch
   git apply -v ../sun8i-codec-analog.c.patch
@@ -106,12 +105,11 @@ prepare() {
   cp ../kd027_lcd.c ./drivers/video/backlight/kd027_lcd.c
   cp ../defconfig ./arch/arm/configs/gameshell_defconfig
 
-  # let's back mainline patch
-  sed -i 's/tcon->dclk_min_div = 1/tcon->dclk_min_div = 6/' ./drivers/gpu/drm/sun4i/sun4i_tcon.c
-  #\cp -fR ../sun4i_tcon.c ./drivers/gpu/drm/sun4i/sun4i_tcon.c
+  # force tcon dclk min divider to 6 (1 in mainline)
+  sed -i 's/tcon->dclk_min_div = tcon->quirks->dclk_min_div/tcon->dclk_min_div = 6/' ./drivers/gpu/drm/sun4i/sun4i_tcon.c
 
-    awk '1;/dtb\-\$\(CONFIG_MACH_SUN8I\) \+= \\/{ print "sun8i-r16-clockworkpi-cpi3.dtb \\"; print "sun8i-r16-clockworkpi-cpi3-hdmi.dtb \\"}' ./arch/arm/boot/dts/Makefile > ./tmp
-    mv ./tmp ./arch/arm/boot/dts/Makefile
+  awk '1;/dtb\-\$\(CONFIG_MACH_SUN8I\) \+= \\/{ print "sun8i-r16-clockworkpi-cpi3.dtb \\"; print "sun8i-r16-clockworkpi-cpi3-hdmi.dtb \\"}' ./arch/arm/boot/dts/Makefile > ./tmp
+  mv ./tmp ./arch/arm/boot/dts/Makefile
 
   # add pkgrel to extraversion
   sed -ri "s|^(EXTRAVERSION =)(.*)|\1 \2-${pkgrel}|" Makefile
@@ -120,8 +118,6 @@ prepare() {
   sed -i '2iexit 0' scripts/depmod.sh
 
   make gameshell_defconfig
-#  make menuconfig
-#  cp ../.config .
 }
 
 build() {
