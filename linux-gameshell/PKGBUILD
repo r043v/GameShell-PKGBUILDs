@@ -73,7 +73,7 @@ md5sums=('20fbbd8b9f193ecefb8b34256ce289db'
          'd5333d180213c8babdb98bb957b6a31b'
          'c4035ebef02f93bdfb980e89a32ffb60'
          'b753b881f8a62e18fa33825b0158753a'
-         '73d6b0d9dbba1120ad81aa63ac5f3f88')
+         '320fa2deb799009bad4ca761a57c2ec1')
 
 prepare() {
   cd "${srcdir}/${_srcname}"
@@ -150,10 +150,10 @@ build() {
 
   #yes "" | make config
 
-  make menuconfig
+#  make menuconfig
 
-  make savedefconfig 
-  cp defconfig ../gs_defconfig
+#  make savedefconfig 
+#  cp defconfig ../gs_defconfig
 
   # build!
   KCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -O3 -pipe" KCPPFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -O3 -pipe" make -j$(nproc) ${MAKEFLAGS} zImage modules dtbs
