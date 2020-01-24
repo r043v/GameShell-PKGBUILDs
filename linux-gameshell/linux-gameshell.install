@@ -2,7 +2,7 @@
 # arg 2:  the old package version
 
 KERNEL_NAME=-gameshell
-KERNEL_VERSION=5.4.11-1-gs
+KERNEL_VERSION=5.4.14-1-gs
 
 post_install () {
   # updating module dependencies

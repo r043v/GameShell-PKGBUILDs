@@ -4,7 +4,7 @@
 
 buildarch=4
 
-_rcver=5.4.11
+_rcver=5.4.14
 #_rcrel=1
 #_rcnrel=armv7-x4
 
@@ -49,7 +49,7 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/${_srcname}.tar.xz"
         'sun8i-r16-clockworkpi-cpi3.dts.patch'
         'sun8i-r16-clockworkpi-cpi3-hdmi.dts.patch'
         'defconfig')
-md5sums=('b5230952ac3de1e235cd9a33ae59c5c8'
+md5sums=('20fbbd8b9f193ecefb8b34256ce289db'
          '4f2379ed84258050edb858ee8d281678'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          'ae7ccb81e057c4d81401e725f102ee5f'
@@ -150,7 +150,10 @@ build() {
 
   #yes "" | make config
 
-#  make menuconfig
+  make menuconfig
+
+  make savedefconfig 
+  cp defconfig ../gs_defconfig
 
   # build!
   KCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -O3 -pipe" KCPPFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -O3 -pipe" make -j$(nproc) ${MAKEFLAGS} zImage modules dtbs
