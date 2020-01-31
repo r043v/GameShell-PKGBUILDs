@@ -11,7 +11,7 @@
 
 pkgname=mesa-lima
 pkgdesc="an open-source implementation of the OpenGL specification, lima only version"
-pkgver=20.0.0_devel.1.d55573a
+pkgver=20.0.0_devel.1.58fd26c
 pkgrel=1
 arch=('armv7h')
 makedepends=('git' 'meson' 'ninja' )
@@ -27,12 +27,9 @@ conflicts=('mesa' 'opencl-mesa' 'libva-mesa-driver' 'mesa-vdpau' 'libglvnd' )
 url="https://www.mesa3d.org"
 license=('custom')
 source=('LICENSE'
-        'LICENSE'
 )
-md5sums=('10a9d94c27477a9f9afed27f7d1c4476'
-         '10a9d94c27477a9f9afed27f7d1c4476')
-sha512sums=('fdf7ec3c5f21d001ff99544fc0445c2dc904243862b19df4ec1e4288a1934b8719b37c24d4608539cfdc177ec974a9dbbb45e4a8407e82d67156775b56b81a66'
-            'fdf7ec3c5f21d001ff99544fc0445c2dc904243862b19df4ec1e4288a1934b8719b37c24d4608539cfdc177ec974a9dbbb45e4a8407e82d67156775b56b81a66')
+md5sums=('10a9d94c27477a9f9afed27f7d1c4476')
+sha512sums=('fdf7ec3c5f21d001ff99544fc0445c2dc904243862b19df4ec1e4288a1934b8719b37c24d4608539cfdc177ec974a9dbbb45e4a8407e82d67156775b56b81a66')
 
 # NINJAFLAGS is an env var used to pass commandline options to ninja
 # NOTE: It's your responbility to validate the value of $NINJAFLAGS. If unsure, don't set it.
