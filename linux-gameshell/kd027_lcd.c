@@ -114,20 +114,20 @@ static ssize_t kd027_proc_write(struct file * file, const char __user * buf, siz
 
 	return size;
 }
-
-static const struct file_operations kd027_proc_fops = {
-	.open		= kd027_proc_open,
-	.read		= kd027_proc_read,
-	.write		= kd027_proc_write,
-	.llseek		= seq_lseek,
-	.release	= single_release,
+static const struct proc_ops kd027_proc_ops = {
+//static const struct file_operations kd027_proc_fops = {
+	.proc_open		= kd027_proc_open,
+	.proc_read		= kd027_proc_read,
+	.proc_write		= kd027_proc_write,
+	.proc_lseek		= seq_lseek,
+	.proc_release	= single_release,
 };
 
 static int __init kd027_proc_init(void)
 {
 	struct proc_dir_entry *r;
 
-	r = proc_create("driver/lcd", S_IRWXUGO, NULL, &kd027_proc_fops);
+	r = proc_create("driver/lcd", S_IRWXUGO, NULL, &kd027_proc_ops);
 	if (!r)
 		return -ENOMEM;
 	return 0;

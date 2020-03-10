@@ -4,17 +4,17 @@
 
 buildarch=4
 
-_rcver=5.4.16
-#_rcrel=1
+_rcver=5.6
+_rcrel=5
 #_rcnrel=armv7-x4
 
 pkgbase=linux-gameshell
-_srcname=linux-${_rcver}
-#_srcname=linux-${_rcver}-rc${_rcrel}
+#_srcname=linux-${_rcver}
+_srcname=linux-${_rcver}-rc${_rcrel}
 _kernelname=${pkgbase#linux}
 _desc="gameshell linux kernel"
-pkgver=${_rcver}
-#pkgver=${_rcver}.rc${_rcrel}
+#pkgver=${_rcver}
+pkgver=${_rcver}.rc${_rcrel}
 pkgrel=1
 arch=('armv7h')
 url="http://www.kernel.org/"
@@ -23,8 +23,8 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' '
 options=('!strip')
 # "https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/core/linux-armv7-rc/config"
 
-#source=("https://git.kernel.org/torvalds/t/${_srcname}.tar.gz"
-source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/${_srcname}.tar.xz"
+source=("https://git.kernel.org/torvalds/t/${_srcname}.tar.gz"
+#source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/${_srcname}.tar.xz"
         'kernel.its'
         'kernel.keyblock'
         'linux.preset'
@@ -33,23 +33,22 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/${_srcname}.tar.xz"
         'axp20x.c.patch'
         'fbcon.c.patch'
         'fbmem.c.patch'
-        'Kconfig.patch'
         'kd027_lcd.c'
-        'leds-gpio.c.patch'
-        'Makefile.patch.000'
-        'Makefile.patch.001'
-        'ocp8178_bl.c.patch'
+        'leds-gpio.c'
+        'ocp8178_bl.c'
         'panel-simple.c.patch'
-        'sdio.c.patch'
-        'sun4i_drv.c.patch'
+        'sdio.c'
         'sun6i-prcm.c.patch'
         'sun8i-codec-aif2.c.patch'
         'sun8i-codec-analog.c.patch'
         'sun8i-codec.c.patch'
-        'sun8i-r16-clockworkpi-cpi3.dts.patch'
-        'sun8i-r16-clockworkpi-cpi3-hdmi.dts.patch'
-        'defconfig')
-md5sums=('620b854457ebc18cd5d52a541515706f'
+        'sun8i-r16-clockworkpi-cpi3.dts'
+	'sun8i-r16-clockworkpi-cpi3-hdmi.dts'
+        'defconfig'
+	'lima.tar.xz'
+	'lima_drm.h'
+)
+md5sums=('41cddf344dfa3bdf20b0500927daee6b'
          '4f2379ed84258050edb858ee8d281678'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          'ae7ccb81e057c4d81401e725f102ee5f'
@@ -58,22 +57,20 @@ md5sums=('620b854457ebc18cd5d52a541515706f'
          '6527384ca37d3a11bc3f8c76482bdf22'
          '1e810fd0562c2df592bc74646b8c9e14'
          '17f6d1aa461e4a94203271893fccdc57'
-         'cfa3aef146a8e556ea13f95590daad8a'
-         '2488e24ac330ec732820784ccf667af9'
-         '4362b7f317c0ddbb1be23f08d0078496'
-         '080d10329b987cef1b7ba90379b7748d'
-         'f8c96827a8001a6646ae20b2af393bbd'
-         'f2a52a896caa06d8df0e78da05d190f9'
+         '82ebc1fef36633ba4a0b9b1e3c7f2525'
+         'c174a02a4f714c1cf2475a1ba07f193b'
+         '303827aeea65c51c71242760d2923f52'
          '428338a287c4e8fe807a5d8a50ca9086'
-         'de0a89db1262fd3c1d7d2bf00ee05fed'
-         'c4de9489f71dd12277e3162ee2913287'
+         '28edea5ff4bf5aa7edcf77d03f2ec839'
          '8ba1f2536f56f54818daffbbd8274303'
          '0163e3949f1922118ecff3b2271cbe05'
          'a5dfb660f7c23046c90b24bc17ff6bfd'
          'd5333d180213c8babdb98bb957b6a31b'
-         'c4035ebef02f93bdfb980e89a32ffb60'
-         'b753b881f8a62e18fa33825b0158753a'
-         '320fa2deb799009bad4ca761a57c2ec1')
+         'cce21e65c322dc7a0287ee16386f573d'
+         'ac54cda3d19e4f881445eb9b04682331'
+         '1fccd91894b690f81ac1f47221ce1957'
+         '779def9b193585c8c80a3cd66cbf082e'
+         'b60bd76d4cf078b4332ea6946cf8986e')
 
 prepare() {
   cd "${srcdir}/${_srcname}"
@@ -82,33 +79,50 @@ prepare() {
 #  git apply ../patch-${_rcver}-rc${_rcrel}-${_rcnrel}.diff
   rm -f scripts/bin2c
 
-  # gameshell specifics
+  # gameshell specific patch
   git apply -v ../axp20x-pek.c.patch
   git apply -v ../axp20x.c.patch
   git apply -v ../fbcon.c.patch
   git apply -v ../fbmem.c.patch
-  git apply -v ../Kconfig.patch
-  git apply -v ../leds-gpio.c.patch
-  git apply -v ../Makefile.patch.000
-  git apply -v ../Makefile.patch.001
-  git apply -v ../ocp8178_bl.c.patch
+  #git apply -v ../Makefile.patch.000
+  #git apply -v ../Makefile.patch.001
   git apply -v ../panel-simple.c.patch
-  git apply -v ../sdio.c.patch
-  git apply -v ../sun4i_drv.c.patch
   git apply -v ../sun6i-prcm.c.patch
   git apply -v ../sun8i-codec-aif2.c.patch
   git apply -v ../sun8i-codec-analog.c.patch
   git apply -v ../sun8i-codec.c.patch
-  git apply -v ../sun8i-r16-clockworkpi-cpi3.dts.patch
-  git apply -v ../sun8i-r16-clockworkpi-cpi3-hdmi.dts.patch
 
-  cp ../kd027_lcd.c ./drivers/video/backlight/kd027_lcd.c
+  # copy gameshell dts
+  cp ../sun8i-r16-clockworkpi-cpi3*.dts ./arch/arm/boot/dts/
+
+  # copy gameshell dedicated drivers
+  cp ../ocp8178_bl.c ./drivers/video/backlight/
+  cp ../kd027_lcd.c ./drivers/video/backlight/
+  cp ../sdio.c ./drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+  cp ../leds-gpio.c ./drivers/leds/leds-gpio.c
+
+  # append lcd & backlight config
+  sed -i -e '/endif # LCD_CLASS_DEVICE/i config LCD_KD027\n\ttristate "STARTEK KD027 LCD Driver"\n\thelp\n\t  If you have a KD027 LCD panel, say Y to enable its LCD control\n\t  driver.\n' -e '/endif # BACKLIGHT_CLASS_DEVICE/i config BACKLIGHT_OCP8178\n\ttristate "OCP8178 Backlight Driver"\n\tdepends on GPIOLIB\n\thelp\n\t  If you have an OCP8178, say Y to enable the backlight driver.\n' ./drivers/video/backlight/Kconfig
+
+  # append lcd & backlight objects to Makefile
+  echo -e '\nobj-$(CONFIG_LCD_KD027)\t\t+= kd027_lcd.o\nobj-$(CONFIG_BACKLIGHT_OCP8178)\t\t+= ocp8178_bl.o\n' >> ./drivers/video/backlight/Makefile
+
+  # uncompress lima-next
+  tar -xJf ../lima.tar.xz -C ./drivers/gpu/drm/
+  cp ../lima_drm.h ./include/uapi/drm/lima_drm.h
+
+  # uncompress sun4i-next
+#  tar -xJf ../sun4i.tar.xz -C ./drivers/gpu/drm/
+#  cp ../drm_bridge.h ./include/drm/drm_bridge.h
+
+  # copy gameshell kernel defconfig
   cp ../defconfig ./arch/arm/configs/gameshell_defconfig
 
   # force tcon dclk min divider to 6 (1 in mainline)
   sed -i 's/tcon->dclk_min_div = tcon->quirks->dclk_min_div/tcon->dclk_min_div = 6/' ./drivers/gpu/drm/sun4i/sun4i_tcon.c
 
   awk '1;/dtb\-\$\(CONFIG_MACH_SUN8I\) \+= \\/{ print "sun8i-r16-clockworkpi-cpi3.dtb \\"; print "sun8i-r16-clockworkpi-cpi3-hdmi.dtb \\"}' ./arch/arm/boot/dts/Makefile > ./tmp
+#  awk '1;/dtb\-\$\(CONFIG_MACH_SUN8I\) \+= \\/{ print "sun8i-r16-clockworkpi-cpi3.dtb \\"; }' ./arch/arm/boot/dts/Makefile > ./tmp
   mv ./tmp ./arch/arm/boot/dts/Makefile
 
   # add pkgrel to extraversion
@@ -147,9 +161,8 @@ build() {
   #yes "" | make config
 
 #  make menuconfig
-
 #  make savedefconfig 
-#  cp defconfig ../gs_defconfig
+#  cp defconfig ../defconfig
 
   # build!
   KCFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -O3 -pipe" KCPPFLAGS="-mcpu=cortex-a7 -mfpu=neon-vfpv4 -O3 -pipe" make -j$(nproc) ${MAKEFLAGS} zImage modules dtbs
@@ -177,7 +190,7 @@ _package() {
   mkdir -p "${pkgdir}"/{lib/modules,lib/firmware,boot/dtbs}
   make INSTALL_MOD_PATH="${pkgdir}" modules_install
   cp arch/$KARCH/boot/zImage "${pkgdir}/boot/zImage"
-  cp arch/$KARCH/boot/dts/*.dtb "${pkgdir}/boot/dtbs"
+  cp arch/$KARCH/boot/dts/sun8i-r16-clockworkpi-cpi3*.dtb "${pkgdir}/boot/dtbs"
 
   # set correct depmod command for install
   sed \
