@@ -2,7 +2,7 @@
 
 pkgname=libretro-gpsp-gameshell
 #_gitname=gpsp
-pkgver=1579807044
+pkgver=1581940126
 pkgrel=1
 pkgdesc="libretro implementation of gpsp"
 arch=('armv7h' 'x86_64')
