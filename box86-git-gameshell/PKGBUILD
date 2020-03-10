@@ -1,5 +1,5 @@
 pkgname=box86-git-gameshell
-pkgver=0.0.4.r569.b6c729f
+pkgver=0.1.0.r20.7a02b17
 pkgrel=1
 pkgdesc='box86 (git-latest)'
 arch=( armv7h )
