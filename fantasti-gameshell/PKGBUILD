@@ -1,5 +1,5 @@
 pkgname=fantasti-gameshell
-pkgver=0.4.k
+pkgver=0.4.l
 pkgrel=1
 pkgdesc='fantasti launcher'
 arch=(armv7h x86_64)
