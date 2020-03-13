@@ -1,0 +1,16 @@
+# Maintainer: noferi mickaël <noferov at dude dot pm>
+
+buildarch=4
+
+pkgname=bluetooth-gameshell
+pkgdesc="bluetooth firmware upload service"
+pkgver=0.1
+pkgrel=1
+arch=('armv7h')
+depends=('brcm-patchram-plus')
+source=('bluetooth-upload-firmware.sh')
+package() {
+	install -D -m0755 bluetooth-upload-firmware.sh "$pkgdir/etc/X11/xinit/xinitrc.d/bluetooth-upload-firmware.sh"
+}
+
+md5sums=('229845e03ba6b87e4cf9892d8d5e3033')
