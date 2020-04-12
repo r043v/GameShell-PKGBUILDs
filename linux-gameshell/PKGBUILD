@@ -4,17 +4,17 @@
 
 buildarch=4
 
-_rcver=5.6
-_rcrel=5
+_rcver=5.6.3
+#_rcrel=7
 #_rcnrel=armv7-x4
 
 pkgbase=linux-gameshell
-#_srcname=linux-${_rcver}
-_srcname=linux-${_rcver}-rc${_rcrel}
+_srcname=linux-${_rcver}
+#_srcname=linux-${_rcver}-rc${_rcrel}
 _kernelname=${pkgbase#linux}
 _desc="gameshell linux kernel"
-#pkgver=${_rcver}
-pkgver=${_rcver}.rc${_rcrel}
+pkgver=${_rcver}
+#pkgver=${_rcver}.rc${_rcrel}
 pkgrel=1
 arch=('armv7h')
 url="http://www.kernel.org/"
@@ -23,8 +23,8 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'uboot-tools' '
 options=('!strip')
 # "https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/core/linux-armv7-rc/config"
 
-source=("https://git.kernel.org/torvalds/t/${_srcname}.tar.gz"
-#source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/${_srcname}.tar.xz"
+#source=("https://git.kernel.org/torvalds/t/${_srcname}.tar.gz"
+source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/${_srcname}.tar.xz"
         'kernel.its'
         'kernel.keyblock'
         'linux.preset'
@@ -48,7 +48,7 @@ source=("https://git.kernel.org/torvalds/t/${_srcname}.tar.gz"
 	'lima.tar.xz'
 	'lima_drm.h'
 )
-md5sums=('41cddf344dfa3bdf20b0500927daee6b'
+md5sums=('42265d19e3eba2b89291cd752830b173'
          '4f2379ed84258050edb858ee8d281678'
          '61c5ff73c136ed07a7aadbf58db3d96a'
          'ae7ccb81e057c4d81401e725f102ee5f'
@@ -68,7 +68,7 @@ md5sums=('41cddf344dfa3bdf20b0500927daee6b'
          'd5333d180213c8babdb98bb957b6a31b'
          'cce21e65c322dc7a0287ee16386f573d'
          'ac54cda3d19e4f881445eb9b04682331'
-         '1fccd91894b690f81ac1f47221ce1957'
+         '24d66419ab90aadb09438d8c0558bd70'
          '779def9b193585c8c80a3cd66cbf082e'
          'b60bd76d4cf078b4332ea6946cf8986e')
 
@@ -160,8 +160,8 @@ build() {
 
   #yes "" | make config
 
-#  make menuconfig
-#  make savedefconfig 
+  make menuconfig
+  make savedefconfig 
 #  cp defconfig ../defconfig
 
   # build!
