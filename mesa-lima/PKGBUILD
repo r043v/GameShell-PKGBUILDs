@@ -11,7 +11,7 @@
 
 pkgname=mesa-lima
 pkgdesc="an open-source implementation of the OpenGL specification, lima only version"
-pkgver=20.1.0_devel.1254.3c96e25d
+pkgver=20.1.0_devel.1.7aa6720
 pkgrel=1
 arch=('armv7h')
 makedepends=('git' 'meson' 'ninja' )
